@@ -20,7 +20,7 @@ function createWindow() {
     minHeight: 600,
     title: 'Dolphin Browser',
     frame: false,
-    icon: path.join(__dirname, 'icon.png'),
+    icon: path.join(__dirname, 'icon.ico'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
