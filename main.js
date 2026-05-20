@@ -51,8 +51,12 @@ function createWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
     setTimeout(() => {
-      autoUpdater.checkForUpdatesAndNotify().catch(() => {});
-    }, 3000);
+      if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
+        autoUpdater.checkForUpdates().catch((err) => {
+          console.log('[Updater] Check failed (likely dev mode or not installed):', err.message);
+        });
+      }
+    }, 5000);
   });
 
   // ===== DOWNLOAD HANDLER =====
