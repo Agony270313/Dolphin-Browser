@@ -17,6 +17,9 @@ app.commandLine.appendSwitch('force-device-scale-factor', '1');
 let mainWindow;
 const downloads = new Map();
 
+// Fix YouTube and modern sites by using a real Chrome User-Agent
+const CHROME_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36';
+
 // Auto updater logging
 const updaterLog = {
   info: (...args) => console.log('[autoUpdater]', ...args),
@@ -125,7 +128,11 @@ autoUpdater.on('error', (err) => {
   if (mainWindow) mainWindow.webContents.send('update-status', { status: 'error', message: err.message });
 });
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  // Set Chrome User-Agent for all sessions so YouTube, Netflix etc. work properly
+  session.defaultSession.setUserAgent(CHROME_USER_AGENT);
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

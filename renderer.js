@@ -322,14 +322,15 @@ function renderTopSites() {
 function createTab(url = null, isIncognito = false) {
   tabCounter++;
   const tabId = tabCounter;
-  const partition = isIncognito ? `private-${Date.now()}-${tabId}` : 'persist:dolphin';
+  const partition = isIncognito ? `private-${Date.now()}-${tabId}` : '';
 
   const webview = document.createElement('webview');
   webview.setAttribute('src', 'about:blank');
-  webview.setAttribute('partition', partition);
+  if (partition) webview.setAttribute('partition', partition);
   webview.setAttribute('allowpopups', 'on');
   webview.setAttribute('nodeintegration', 'no');
   webview.setAttribute('plugins', 'no');
+  webview.setAttribute('webpreferences', 'sandbox=false, contextIsolation=true, allowRunningInsecureContent=yes, javascript=yes');
   webview.style.width = '100%';
   webview.style.height = '100%';
   webview.style.display = 'none';
